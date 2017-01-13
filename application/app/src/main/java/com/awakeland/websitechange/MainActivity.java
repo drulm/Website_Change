@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -23,8 +26,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        //boolean c = checkHost("https://google.com", 443, 200);
-        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+        boolean c = false;
+        // boolean c = checkHost("8.8.8.8", 53, 2000);
+        try {
+            URL url = new URL("http://www.google.com/");
+            // c = isAvailable(url);
+            //more code goes here
+        } catch (MalformedURLException ex){
+        //do exception handling here
+        }
+
+        Snackbar.make(v, "Replace with your own action " + c, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
@@ -75,22 +87,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    public static boolean isAvailable(URL url){
+        try {
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
+            urlConnection.disconnect();
+            return true;
+        } catch (IOException e) {
+            // e.printStackTrace();
+        }
+        return false;
+    }
 
-    public static boolean checkHost(String Addr, int port, int timout){
+    public static boolean checkHost(String Addr, int port, int timeout){
         boolean conn = false;
         Socket sock;
         try {
             sock = new Socket();
             SocketAddress socketAddress = new InetSocketAddress(Addr, port);
-            sock.connect(socketAddress, timout);
+            sock.connect(socketAddress, timeout);
             if (sock.isConnected()) {
                 conn = true;
                 sock.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            // socket = null;
         }
         return conn;
     }
