@@ -17,4 +17,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Monitor Websites for Changes" />
+
+    <Button
+        android:text="Check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="23dp"
+        android:id="@+id/check_host"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

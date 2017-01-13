@@ -5,9 +5,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void onClick(View v) {
+        boolean c = checkHost("https://google.com", 443, 200);
+        switch (v.getId()) {
+            case R.id.check_host:
+                Toast.makeText(this, "Click event works." + c, Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -47,6 +63,29 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+
+
         return super.onOptionsItemSelected(item);
     }
+
+
+    public static boolean checkHost(String Addr, int port, int timout){
+        boolean conn = false;
+        Socket sock;
+        try {
+            sock = new Socket();
+            SocketAddress socketAddress = new InetSocketAddress(Addr, port);
+            sock.connect(socketAddress, timout);
+            if (sock.isConnected()) {
+                conn = true;
+                sock.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // socket = null;
+        }
+        return conn;
+    }
+
 }
