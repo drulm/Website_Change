@@ -1,4 +1,4 @@
-package com.awakeland.website_change;
+package com.awakeland.websitechange;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.awakeland.website_change", appContext.getPackageName());
+        assertEquals("com.awakeland.websitechange", appContext.getPackageName());
     }
 }

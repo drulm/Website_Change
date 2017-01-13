@@ -1,4 +1,4 @@
-package com.awakeland.website_change;
+package com.awakeland.websitechange;
 
 import org.junit.Test;
 
