@@ -22,11 +22,21 @@
         android:text="Check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="34dp"
         android:id="@+id/check_host"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/check_host"
+        android:layout_alignLeft="@+id/check_host"
+        android:layout_alignStart="@+id/check_host"
+        android:layout_marginTop="22dp"
+        android:id="@+id/editText" />
 </RelativeLayout>

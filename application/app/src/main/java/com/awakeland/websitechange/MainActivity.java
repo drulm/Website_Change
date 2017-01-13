@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,7 +16,17 @@ import java.net.Socket;
 import java.net.SocketAddress;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Button button;
+
+
+    @Override
+    public void onClick(View v) {
+        //boolean c = checkHost("https://google.com", 443, 200);
+        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        button = (Button) findViewById(R.id.check_host);
+
+        button.setOnClickListener(this);
     }
 
     @Override
@@ -42,14 +56,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onClick(View v) {
-        boolean c = checkHost("https://google.com", 443, 200);
-        switch (v.getId()) {
-            case R.id.check_host:
-                Toast.makeText(this, "Click event works." + c, Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -89,3 +96,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
+
