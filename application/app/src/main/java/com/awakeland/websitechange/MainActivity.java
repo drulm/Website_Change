@@ -5,19 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.MalformedURLException;
-
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,14 +22,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         boolean c = false;
-        // boolean c = checkHost("8.8.8.8", 53, 2000);
-        try {
-            URL url = new URL("http://www.google.com/");
-            // c = isAvailable(url);
-            //more code goes here
-        } catch (MalformedURLException ex){
-        //do exception handling here
-        }
+
+        c = checkSite("http://google.com");
+
+        Log.v("WebsiteChange", String.valueOf(c));
 
         Snackbar.make(v, "Replace with your own action " + c, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
@@ -51,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "TODO update this", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -60,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         button.setOnClickListener(this);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,35 +79,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    public static boolean isAvailable(URL url){
-        try {
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
-            urlConnection.disconnect();
-            return true;
-        } catch (IOException e) {
-            // e.printStackTrace();
-        }
-        return false;
-    }
 
-    public static boolean checkHost(String Addr, int port, int timeout){
-        boolean conn = false;
-        Socket sock;
-        try {
-            sock = new Socket();
-            SocketAddress socketAddress = new InetSocketAddress(Addr, port);
-            sock.connect(socketAddress, timeout);
-            if (sock.isConnected()) {
-                conn = true;
-                sock.close();
+
+    /**
+     * checkSite(String Address)
+     * @param Address
+     * @return
+     */
+    public static boolean checkSite(String Address) {
+        final String theURL = Address;
+
+        new Thread() {
+            @Override
+            public void run() {
+                int responseCode;
+
+                super.run();
+                try {
+                    URL url = new URL(theURL);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("HEAD");
+                    connection.connect();
+
+                    responseCode = connection.getResponseCode();
+                    Log.i("WebsiteChange", "getResponseCode() IS : " + responseCode);
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        Log.i("WebsiteChange", "Connected");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i("WebsiteChange", "No Connection");
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return conn;
+        }.start();
+        return true;
     }
 
 }
-
 
