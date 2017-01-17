@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.os.HandlerThread;
+import android.support.design.widget.FloatingActionButton;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,13 +22,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        boolean c = false;
+        int status;
 
-        c = checkSite("http://google.com");
+        status = checkSite("http://google.com");
 
-        Log.v("WebsiteChange", String.valueOf(c));
+        Log.v("WebsiteChange", String.valueOf(status));
 
-        Snackbar.make(v, "Replace with your own action " + c, Snackbar.LENGTH_LONG)
+        Snackbar.make(v, "Replace with your own action " + status, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button = (Button) findViewById(R.id.check_host);
 
         button.setOnClickListener(this);
-        */
     }
 
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         uiThread.start();
-        latch.await();
+        //latch.await();
         return returnValue[0];
     }
 
