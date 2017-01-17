@@ -1,7 +1,6 @@
 package com.awakeland.websitechange;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,14 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.os.HandlerThread;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.CountDownLatch;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button button;
-
 
     @Override
     public void onClick(View v) {
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button = (Button) findViewById(R.id.check_host);
 
         button.setOnClickListener(this);
+        */
     }
 
 
@@ -86,10 +87,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param Address
      * @return
      */
-    public static boolean checkSite(String Address) {
+    public static int checkSite(String Address) {
         final String theURL = Address;
+        final CountDownLatch latch = new CountDownLatch(1);
+        final int[] returnValue = new int[1];
 
-        new Thread() {
+        Thread uiThread = new HandlerThread("UIHandler") {
             @Override
             public void run() {
                 int responseCode;
@@ -106,13 +109,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         Log.i("WebsiteChange", "Connected");
                     }
+                    returnValue[0] = responseCode;
+                    latch.countDown(); // Release await() in the test thread.
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.i("WebsiteChange", "No Connection");
                 }
             }
-        }.start();
-        return true;
+        };
+        uiThread.start();
+        latch.await();
+        return returnValue[0];
     }
 
 }
