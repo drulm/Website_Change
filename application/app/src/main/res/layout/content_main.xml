@@ -39,4 +39,14 @@
         android:layout_alignStart="@+id/check_host"
         android:layout_marginTop="22dp"
         android:id="@+id/editText" />
+
+    <Button
+        android:text="Add Site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="58dp"
+        android:id="@+id/add_site"
+        android:onClick="newSiteActivity" />
 </RelativeLayout>
