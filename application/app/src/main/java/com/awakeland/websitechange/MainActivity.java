@@ -1,6 +1,7 @@
 package com.awakeland.websitechange;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,26 +10,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.os.HandlerThread;
-import android.support.design.widget.FloatingActionButton;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.CountDownLatch;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button button;
+    private volatile int networkReturnStatus;
 
     @Override
     public void onClick(View v) {
         int status;
 
+        Log.v("WebsiteChange", "-----Start Ping-----");
         status = checkSite("http://google.com");
+        Log.v("WebsiteChange", "Y: Status Returned:" + status);
+        status = checkSite("192.168.0.3");
+        Log.v("WebsiteChange", "No: Status Returned:" + status);
+        status = checkSite("http://yahoo.com");
+        Log.v("WebsiteChange", "Yes: Status Returned:" + status);
+        status = checkSite("http://nosite.nosite");
+        Log.v("WebsiteChange", "No: Status Returned:" + status);
+        status = checkSite("http://google.com");
+        Log.v("WebsiteChange", "Yes: Status Returned:" + status);
+        Log.v("WebsiteChange", "-----End Ping-----");
 
-        Log.v("WebsiteChange", String.valueOf(status));
-
-        Snackbar.make(v, "Replace with your own action " + status, Snackbar.LENGTH_LONG)
+        Snackbar.make(v, "Network status code returned: " + status, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
@@ -87,17 +95,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param Address
      * @return
      */
-    public static int checkSite(String Address) {
+    public int checkSite(String Address) {
         final String theURL = Address;
-        final CountDownLatch latch = new CountDownLatch(1);
         final int[] returnValue = new int[1];
 
-        Thread uiThread = new HandlerThread("UIHandler") {
+        Thread t = new Thread() {
             @Override
             public void run() {
                 int responseCode;
 
-                super.run();
+                //super.run();
                 try {
                     URL url = new URL(theURL);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -105,21 +112,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     connection.connect();
 
                     responseCode = connection.getResponseCode();
-                    Log.i("WebsiteChange", "getResponseCode() IS : " + responseCode);
+                    networkReturnStatus = responseCode;
+                    Log.i("WebsiteChange", "getResponseCode(): " + responseCode);
                     if (responseCode == HttpURLConnection.HTTP_OK) {
-                        Log.i("WebsiteChange", "Connected");
+                        Log.i("WebsiteChange", "Connected!");
                     }
-                    returnValue[0] = responseCode;
-                    latch.countDown(); // Release await() in the test thread.
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.i("WebsiteChange", "No Connection");
                 }
             }
         };
-        uiThread.start();
-        //latch.await();
-        return returnValue[0];
+        t.start();
+        return networkReturnStatus;
     }
 
 }
