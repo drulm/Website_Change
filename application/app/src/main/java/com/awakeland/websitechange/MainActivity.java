@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.v("WebsiteChange", "Yes: Status Returned:" + status);
         status = checkSite("http://nosite.nosite");
         Log.v("WebsiteChange", "No: Status Returned:" + status);
-        status = checkSite("http://google.com");
-        Log.v("WebsiteChange", "Yes: Status Returned:" + status);
         Log.v("WebsiteChange", "-----End Ping-----");*/
 
         WebPageTask task = new WebPageTask();
@@ -58,15 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "TODO update this", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         button = (Button) findViewById(R.id.check_host);
         button.setOnClickListener(this);
@@ -190,5 +179,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 }
-
 
