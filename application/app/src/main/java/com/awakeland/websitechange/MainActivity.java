@@ -14,13 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button button;
+    private Button buttonTest;
+    private Button buttonAddSite;
     private volatile int networkReturnStatus;
     private EditText statusCode;
 
@@ -38,21 +39,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         status = checkSite("http://nosite.nosite");
         Log.v("WebsiteChange", "No: Status Returned:" + status);
         Log.v("WebsiteChange", "-----End Ping-----");*/
+/*
+        switch (v.getId()) {
 
-        WebPageTask task1 = new WebPageTask();
-        task1.execute("https://google.com");
-        WebPageTask task2 = new WebPageTask();
-        task2.execute("127.0.0.1" );
-        WebPageTask task3 = new WebPageTask();
-        task3.execute("https://news.google.com" );
-        WebPageTask task4 = new WebPageTask();
-        task4.execute("http://nosite.nosite" );
-        WebPageTask task5 = new WebPageTask();
-        task5.execute("http://awakeland.com");
+            case R.id.oneButton:
+                // do your code
+                break;
 
+            case R.id.twoButton:
+                // do your code
+                break;
 
-        Snackbar.make(v, "Network status code", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+            case R.id.threeButton:
+                // do your code
+                break;
+
+            default:
+                break;
+        }
+        */
+
+        switch (v.getId()) {
+            case R.id.check_host:
+                WebPageTask task1 = new WebPageTask();
+                task1.execute("https://google.com");
+                WebPageTask task2 = new WebPageTask();
+                task2.execute("127.0.0.1");
+                WebPageTask task3 = new WebPageTask();
+                task3.execute("https://news.google.com");
+                WebPageTask task4 = new WebPageTask();
+                task4.execute("http://nosite.nosite");
+                WebPageTask task5 = new WebPageTask();
+                task5.execute("http://awakeland.com");
+                Snackbar.make(v, "Button pressed", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                break;
+            case R.id.add_site:
+                Intent intent = new Intent(MainActivity.this, SiteEdit.class);
+                startActivity(intent);
+                break;
+        }
+
     }
 
     @Override
@@ -62,8 +89,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        button = (Button) findViewById(R.id.check_host);
-        button.setOnClickListener(this);
+        buttonTest = (Button) findViewById(R.id.check_host);
+        buttonTest.setOnClickListener(this);
+        buttonAddSite = (Button) findViewById(R.id.add_site);
+        buttonAddSite.setOnClickListener(this);
+
     }
 
 
