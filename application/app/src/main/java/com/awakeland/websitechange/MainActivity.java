@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,21 +29,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int status;
 
         /*Log.v("WebsiteChange", "-----Start Ping-----");
-        status = checkSite("http://google.com");
+        status = checkSite("https://google.com");
         Log.v("WebsiteChange", "Y: Status Returned:" + status);
         status = checkSite("192.168.0.3");
         Log.v("WebsiteChange", "No: Status Returned:" + status);
-        status = checkSite("http://yahoo.com");
+        status = checkSite("https://yahoo.com");
         Log.v("WebsiteChange", "Yes: Status Returned:" + status);
         status = checkSite("http://nosite.nosite");
         Log.v("WebsiteChange", "No: Status Returned:" + status);
         Log.v("WebsiteChange", "-----End Ping-----");*/
 
-        WebPageTask task = new WebPageTask();
-        task.execute("http://google.com" );
-        //task.execute("192.168.0.3" );
-        //task.execute("http://yahoo.com" );
-        //task.execute("http://nosite.nosite" );
+        WebPageTask task1 = new WebPageTask();
+        task1.execute("https://google.com");
+        WebPageTask task2 = new WebPageTask();
+        task2.execute("127.0.0.1" );
+        WebPageTask task3 = new WebPageTask();
+        task3.execute("https://news.google.com" );
+        WebPageTask task4 = new WebPageTask();
+        task4.execute("http://nosite.nosite" );
+        WebPageTask task5 = new WebPageTask();
+        task5.execute("http://awakeland.com");
 
 
         Snackbar.make(v, "Network status code", Snackbar.LENGTH_LONG)
@@ -146,12 +151,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("WebsiteChange", "2:getResponseCode(): " + responseCode);
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     responseReturnString = "Connection" + responseCode;
-                    //Log.i("2:WebsiteChange", "2:Connected!");
                 }
+                Log.i("2: In WebsiteChange", "2:Connected! " + responseCode);
             } catch (Exception e) {
                 e.printStackTrace();
                 responseReturnString = "No Connection";
-                //Log.i("2:WebsiteChange", "2:No Connection");
+                Log.i("2: In WebsiteChange", "2:No Connection");
             }
             return responseReturnString;
         }

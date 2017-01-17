@@ -10,4 +10,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.awakeland.websitechange.SiteEdit">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Enter Address"
+        android:ems="10"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        android:id="@+id/siteAddress" />
+
+    <TextView
+        android:text="Site Address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:id="@+id/textSiteAddress" />
+
+    <Button
+        android:text="Add Site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/siteAddress"
+        android:layout_alignLeft="@+id/textSiteAddress"
+        android:layout_alignStart="@+id/textSiteAddress"
+        android:layout_marginTop="43dp"
+        android:id="@+id/buttonSiteAdd" />
 </RelativeLayout>
