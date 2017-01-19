@@ -14,29 +14,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Enter Address"
         android:ems="10"
+        android:id="@+id/siteAddress"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
-        android:id="@+id/siteAddress" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/buttonSiteAdd"
+        android:layout_toStartOf="@+id/buttonSiteAdd" />
 
-    <TextView
-        android:text="Site Address"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:id="@+id/textSiteAddress" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/siteAddress">
+    </ListView>
 
     <Button
         android:text="Add Site"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/siteAddress"
-        android:layout_alignLeft="@+id/textSiteAddress"
-        android:layout_alignStart="@+id/textSiteAddress"
-        android:layout_marginTop="43dp"
-        android:id="@+id/buttonSiteAdd" />
+        android:id="@+id/buttonSiteAdd"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
