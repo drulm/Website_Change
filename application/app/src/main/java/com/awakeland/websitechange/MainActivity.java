@@ -1,10 +1,10 @@
 package com.awakeland.websitechange;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,9 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
-import android.content.Intent;
+
+//import android.support.design.widget.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,6 +26,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonAddSite;
     private volatile int networkReturnStatus;
     private EditText statusCode;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        buttonTest = (Button) findViewById(R.id.check_host);
+        buttonTest.setOnClickListener(this);
+        buttonAddSite = (Button) findViewById(R.id.add_site);
+        buttonAddSite.setOnClickListener(this);
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -39,25 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         status = checkSite("http://nosite.nosite");
         Log.v("WebsiteChange", "No: Status Returned:" + status);
         Log.v("WebsiteChange", "-----End Ping-----");*/
-/*
-        switch (v.getId()) {
-
-            case R.id.oneButton:
-                // do your code
-                break;
-
-            case R.id.twoButton:
-                // do your code
-                break;
-
-            case R.id.threeButton:
-                // do your code
-                break;
-
-            default:
-                break;
-        }
-        */
 
         switch (v.getId()) {
             case R.id.check_host:
@@ -79,22 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
         }
-
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        buttonTest = (Button) findViewById(R.id.check_host);
-        buttonTest.setOnClickListener(this);
-        buttonAddSite = (Button) findViewById(R.id.add_site);
-        buttonAddSite.setOnClickListener(this);
-
-    }
 
 
     @Override
