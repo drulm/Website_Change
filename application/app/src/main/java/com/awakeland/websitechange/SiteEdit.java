@@ -4,10 +4,10 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
                 List myList = new ArrayList();
                 // Only add if string is not empty.
                 site = et.getText().toString();
-                if (! site.isEmpty()) {
+                if (! site.isEmpty() &&  URLUtil.isValidUrl(site)) {
                     myList.add(site);
                     adapter.add(site);
                     et.setText("");
