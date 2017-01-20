@@ -2,12 +2,14 @@ package com.awakeland.websitechange;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,11 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
                     myList.add(site);
                     adapter.add(site);
                     et.setText("");
+                }
+                else {
+                    // Create snackbar message.
+                    Snackbar.make(view, "Site: " + site + "is not a valid URL", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
                 break;
            /* case R.id.exit:
