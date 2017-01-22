@@ -14,11 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-//import android.support.design.widget.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,21 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v) {
-        int status;
-
+    public void onClick(View view) {
         /*Log.v("WebsiteChange", "-----Start Ping-----");
         status = checkSite("https://google.com");
         Log.v("WebsiteChange", "Y: Status Returned:" + status);
-        status = checkSite("192.168.0.3");
-        Log.v("WebsiteChange", "No: Status Returned:" + status);
-        status = checkSite("https://yahoo.com");
-        Log.v("WebsiteChange", "Yes: Status Returned:" + status);
-        status = checkSite("http://nosite.nosite");
-        Log.v("WebsiteChange", "No: Status Returned:" + status);
-        Log.v("WebsiteChange", "-----End Ping-----");*/
+        */
 
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.check_host:
                 WebPageTask task1 = new WebPageTask();
                 task1.execute("https://google.com");
@@ -68,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 task4.execute("http://nosite.nosite");
                 WebPageTask task5 = new WebPageTask();
                 task5.execute("http://awakeland.com");
-                Snackbar.make(v, "Button pressed", Snackbar.LENGTH_LONG)
+                // Create snackbar message.
+                Snackbar.make(view, "Button pressed", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 break;
             case R.id.add_site:
@@ -79,14 +70,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
 
     @Override
@@ -101,11 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
 
-
-
         return super.onOptionsItemSelected(item);
     }
-
 
 
     /**
