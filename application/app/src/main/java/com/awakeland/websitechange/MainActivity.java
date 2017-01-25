@@ -18,6 +18,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
+/**
+ *
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonTest;
@@ -25,6 +28,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private volatile int networkReturnStatus;
     private EditText statusCode;
 
+
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+    /**
+     *
+     * @param view
+     */
     @Override
     public void onClick(View view) {
-        /*Log.v("WebsiteChange", "-----Start Ping-----");
-        status = checkSite("https://google.com");
-        Log.v("WebsiteChange", "Y: Status Returned:" + status);
-        */
 
         switch (view.getId()) {
             case R.id.check_host:
@@ -70,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    /**
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -78,6 +92,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -85,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -95,44 +113,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**
-     * checkSite(String Address)
-     * @param Address
-     * @return
+     *
      */
-    public int checkSite(String Address) {
-        final String theURL = Address;
-        final int[] returnValue = new int[1];
-
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                int responseCode;
-
-                super.run();
-                try {
-                    URL url = new URL(theURL);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("HEAD");
-                    connection.connect();
-
-                    responseCode = connection.getResponseCode();
-                    networkReturnStatus = responseCode;
-                    Log.i("WebsiteChange", "getResponseCode(): " + responseCode);
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        Log.i("WebsiteChange", "Connected!");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.i("WebsiteChange", "No Connection");
-                }
-            }
-        };
-        t.start();
-        return networkReturnStatus;
-    }
-
-
     private class WebPageTask extends AsyncTask<String, Void, String> {
+
+        /**
+         *
+         * @param theURL
+         * @return
+         */
         @Override
         protected String doInBackground(String... theURL) {
             int responseCode;
@@ -160,6 +149,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return responseReturnString;
         }
 
+
+        /**
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(String result) {
             Log.i("2:WebsiteChange", result);
@@ -167,12 +161,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    /**
+     *
+     */
     Handler myHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    // calling to this function from other pleaces
                     // The notice call method of doing things
                     break;
                 default:

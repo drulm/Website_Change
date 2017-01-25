@@ -13,12 +13,20 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class SiteEdit extends ListActivity implements View.OnClickListener {
 
     private Button addSite;
     EditText et;
     String listSites[] = {"https://google.com", "https://news.google.com", "https://bing.com"};
 
+
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +47,10 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
     }
 
 
+    /**
+     *
+     * @param view
+     */
     public void onClick(View view) {
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) getListAdapter();
         String site;
@@ -66,6 +78,12 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         adapter.notifyDataSetChanged();
     }
 
+
+    /**
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
