@@ -9,9 +9,10 @@ import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.ObjectInputStream;
 
 /**
  *
@@ -20,6 +21,7 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
     private Button addSite;
     EditText et;
+    FileInputStream fileStream;
     String listSites[] = {"https://google.com", "https://news.google.com", "https://bing.com"};
 
 
@@ -34,6 +36,16 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
         addSite = (Button) findViewById(R.id.buttonSiteAdd);
         addSite.setOnClickListener(this);
+
+        // Test a file write.
+        try {
+            fileStream = openFileInput("ws_sitelist");
+            ObjectInputStream ois = new ObjectInputStream(fileStream);
+            ArrayList<Object> listSitesObjects = (ArrayList<Object>) ois.readObject();
+            ois.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         et = (EditText) findViewById(R.id.siteAddress);
         List values = new ArrayList();

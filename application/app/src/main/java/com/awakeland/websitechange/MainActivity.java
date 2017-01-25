@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonTest.setOnClickListener(this);
         buttonAddSite = (Button) findViewById(R.id.add_site);
         buttonAddSite.setOnClickListener(this);
-
     }
 
 
