@@ -12,17 +12,17 @@ import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import java.io.OutputStreamWriter;
-import java.io.InputStream;
+import java.util.Arrays;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  *
@@ -104,10 +104,17 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         et = (EditText) findViewById(R.id.siteAddress);
 
         siteListJoined = fileReadString(getApplicationContext());
-        String[] siteItems = siteListJoined.split(",");
-        values = new ArrayList<String>(Arrays.asList(siteItems));
+
+
+        String teststr1[] = siteListJoined.split("\\|");
+
+
+        List<String> siteItems = Arrays.asList(siteListJoined.split("\\|"));
+        values = siteItems;
+
         Log.i("WebsiteChange", "SiteEdit: Read SITEFILE: " + siteListJoined);
-        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE List: " + values);
+        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteItems: " + siteItems);
+        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE teststr1: " + teststr1[2]);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
@@ -142,9 +149,6 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
                             .setAction("Action", null).show();
                 }
                 break;
-           /* case R.id.exit:
-                finish();
-                break;*/
         }
         adapter.notifyDataSetChanged();
     }
