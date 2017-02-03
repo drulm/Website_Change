@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import 	java.io.PrintWriter;
 
 /**
  *
@@ -105,16 +106,12 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
         siteListJoined = fileReadString(getApplicationContext());
 
-
-        String teststr1[] = siteListJoined.split("\\|");
-
-
-        List<String> siteItems = Arrays.asList(siteListJoined.split("\\|"));
-        values = siteItems;
+        values = Arrays.asList(siteListJoined.split("\\|"));
+        //values = siteItems;
 
         Log.i("WebsiteChange", "SiteEdit: Read SITEFILE: " + siteListJoined);
-        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteItems: " + siteItems);
-        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE teststr1: " + teststr1[2]);
+        //Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteItems: " + siteItems);
+        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE values: " + values);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
@@ -137,9 +134,18 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
                 if (! site.isEmpty() &&  URLUtil.isValidUrl(site)) {
                     values.add(site);
                     adapter.add(site);
-                    et.setText("");
-                    siteListJoined = TextUtils.join("|", values);
 
+                    //et.setText("");
+                    try {
+                        PrintWriter writer = new PrintWriter(SITEFILE);
+                        writer.print("");
+                        writer.close();
+                    }
+                    catch (FileNotFoundException e) {
+                        // Err msg here.
+                    }
+
+                    siteListJoined = TextUtils.join("|", values);
                     fileWriteString(siteListJoined, getApplicationContext());
                     Log.i("WebsiteChange", "SiteEdit: Write SITEFILE: " + siteListJoined);
                 }
