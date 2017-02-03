@@ -12,11 +12,17 @@ import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import java.util.Arrays;
+import java.io.OutputStreamWriter;
+import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  *
@@ -27,10 +33,59 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
     EditText et;
     FileInputStream inputStream;
     FileOutputStream outputStream;
-    String SITEFILE = "SiteEditFile";
-    String listSites[] = {"https://google.com", "https://news.google.com", "https://bing.com"};
+    String SITEFILE = "SiteEditFile.txt";
+    //String listSites[] = {"https://google.com", "https://news.google.com", "https://bing.com"};
     String siteListJoined;
     List values = new ArrayList();
+
+
+    /**
+     *
+     * @param str
+     * @param context
+     */
+    private void fileWriteString(String str, Context context) {
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(
+                        context.openFileOutput(SITEFILE, Context.MODE_PRIVATE)
+                    );
+            osw.write(str);
+            osw.close();
+        }
+        catch (IOException e) {
+            Log.e("WebsiteChange", "File writing failed: " + e.toString());
+        }
+    }
+
+    /**
+     *
+     * @param context
+     * @return
+     */
+    private String fileReadString(Context context) {
+        String str = "";
+        try {
+            InputStream is = context.openFileInput(SITEFILE);
+            if ( is != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(is);
+                BufferedReader buffRead = new BufferedReader(inputStreamReader);
+                String recstr = "";
+                StringBuilder sb = new StringBuilder();
+                while ( (recstr = buffRead.readLine()) != null ) {
+                    sb.append(recstr);
+                }
+                is.close();
+                str = sb.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.i("WebsiteChange", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.i("WebsiteChange", "Reading file failed: " + e.toString());
+        }
+        return str;
+    }
+
 
     /**
      *
@@ -38,6 +93,8 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int n;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_site_edit);
 
@@ -46,24 +103,15 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
         et = (EditText) findViewById(R.id.siteAddress);
 
-        //for (int i = 0; i < listSites.length; i++)
-
-        try {
-            inputStream  = openFileInput(SITEFILE);
-            inputStream.read(siteListJoined.getBytes());
-            inputStream.close();
-            List<String> values = new ArrayList<String>(Arrays.asList(siteListJoined.split("|||")));
-            Log.i("WebsiteChange", "SiteEdit: SITEFILE: " + Arrays.toString(values.toArray()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        siteListJoined = fileReadString(getApplicationContext());
+        String[] siteItems = siteListJoined.split(",");
+        values = new ArrayList<String>(Arrays.asList(siteItems));
+        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE: " + siteListJoined);
+        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE List: " + values);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
-
-
-
     }
 
 
@@ -77,27 +125,16 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.buttonSiteAdd:
-                //List myList = new ArrayList();
                 // Only add if string is not empty.
                 site = et.getText().toString();
                 if (! site.isEmpty() &&  URLUtil.isValidUrl(site)) {
                     values.add(site);
                     adapter.add(site);
                     et.setText("");
-                    siteListJoined = TextUtils.join("|||", values);
+                    siteListJoined = TextUtils.join("|", values);
 
-                    try {
-                        /* fileStream = openFileInput(SITEFILE);
-                        ObjectInputStream ois = new ObjectInputStream(fileStream);
-                        ArrayList<Object> listSitesObjects = (ArrayList<Object>) ois.readObject();
-                        ois.close();*/
-                        Log.i("WebsiteChange", "SiteEdit: SITEFILE: " + SITEFILE);
-                        outputStream  = openFileOutput(SITEFILE, Context.MODE_PRIVATE);
-                        outputStream.write(siteListJoined.getBytes());
-                        outputStream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    fileWriteString(siteListJoined, getApplicationContext());
+                    Log.i("WebsiteChange", "SiteEdit: Write SITEFILE: " + siteListJoined);
                 }
                 else {
                     // Create snackbar message.
