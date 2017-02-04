@@ -8,11 +8,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import java.util.Arrays;
+import java.util.Set;
+import java.util.HashSet;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,8 +22,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import 	java.io.PrintWriter;
+import java.io.PrintWriter;
 
 /**
  *
@@ -106,8 +107,16 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
         siteListJoined = fileReadString(getApplicationContext());
 
-        values = Arrays.asList(siteListJoined.split("\\|"));
-        //values = siteItems;
+        values = new ArrayList<String>(Arrays.asList(siteListJoined.split("\\|")));
+        if (values.get(0) == "") {
+            values.remove(0);
+        }
+
+        
+        Set<String> hs = new HashSet<>();
+        hs.addAll(values);
+        values.clear();
+        values.addAll(hs);
 
         Log.i("WebsiteChange", "SiteEdit: Read SITEFILE: " + siteListJoined);
         //Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteItems: " + siteItems);
@@ -131,11 +140,15 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
             case R.id.buttonSiteAdd:
                 // Only add if string is not empty.
                 site = et.getText().toString();
-                if (! site.isEmpty() &&  URLUtil.isValidUrl(site)) {
+                if (
+                        ! site.isEmpty()
+                        && ! values.contains(site)
+                    /* &&  URLUtil.isValidUrl(site)*/
+                        ) {
                     values.add(site);
                     adapter.add(site);
 
-                    //et.setText("");
+                    et.setText("");
                     try {
                         PrintWriter writer = new PrintWriter(SITEFILE);
                         writer.print("");
