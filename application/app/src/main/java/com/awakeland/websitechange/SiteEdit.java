@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import android.webkit.URLUtil;
 
 /**
  *
@@ -148,7 +149,7 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
                 if (
                         ! site.isEmpty()
                         && ! values.contains(site)
-                    /* &&  URLUtil.isValidUrl(site)*/
+                        &&  URLUtil.isValidUrl(site)
                         ) {
                     values.add(site);
                     adapter.add(site);
