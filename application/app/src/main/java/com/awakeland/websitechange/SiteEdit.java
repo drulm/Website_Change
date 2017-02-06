@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -39,7 +40,6 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
     FileInputStream inputStream;
     FileOutputStream outputStream;
     String SITEFILE = "SiteEditFile.txt";
-    //String listSites[] = {"https://google.com", "https://news.google.com", "https://bing.com"};
     String siteListJoined;
     List values = new ArrayList();
 
@@ -130,6 +130,19 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
+    }
+
+
+    /**
+     *
+     * @param lv
+     * @param v
+     * @param pos
+     * @param id
+     */
+    @Override
+    protected void onListItemClick (ListView lv, View v, int pos, long id) {
+        Log.i("WebsiteChange", "SiteEdit: List Item Clicked: " + pos);
     }
 
 
