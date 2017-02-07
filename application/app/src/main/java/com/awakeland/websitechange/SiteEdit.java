@@ -144,6 +144,8 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
      */
     @Override
     protected void onListItemClick (ListView listview, View view, int pos, long id) {
+        final int p = pos;
+
         Log.i("WebsiteChange", "SiteEdit: List Item Clicked: " + pos);
         PopupMenu popup = new PopupMenu(getApplicationContext(), view);
         popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
@@ -151,6 +153,10 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 Log.i("WebsiteChange", "SiteEdit: Menu Item: " + item.getTitle());
+                if (item.getTitle() == "Delete Entry") {
+                    Object toRemove = values.remove(p);
+                    values.remove(toRemove);
+                }
                 return true;
             }
         });
