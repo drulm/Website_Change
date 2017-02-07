@@ -2,7 +2,6 @@ package com.awakeland.websitechange;
 
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,7 +36,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import android.os.AsyncTask;
 
 /**
  *
@@ -154,7 +151,7 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
      * @param id
      */
     @Override
-    protected void onListItemClick (ListView listview, View view, int pos, long id) {
+    protected void onListItemClick (final ListView listview, View view, int pos, long id) {
         final int p = pos;
         final View v = view;
 
@@ -174,7 +171,7 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
                 else if (item.getTitle().equals("Check Site")) {
                     Log.i("WebsiteChange", "SiteEdit: Menu Item: Inside CheckSite");
                     WebPageTask task1 = new WebPageTask();
-                    task1.execute("https://google.com");
+                    task1.execute(siteArrayList.get(p).toString());
                 }
                 return true;
             }
@@ -218,6 +215,8 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
                 responseReturnString = "No Connection";
                 Log.i("2: In WebsiteChange", "2:No Connection");
             }
+
+
             return responseReturnString;
         }
 
