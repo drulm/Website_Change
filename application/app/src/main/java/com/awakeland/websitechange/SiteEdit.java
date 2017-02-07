@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -144,8 +146,15 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
     protected void onListItemClick (ListView listview, View view, int pos, long id) {
         Log.i("WebsiteChange", "SiteEdit: List Item Clicked: " + pos);
         PopupMenu popup = new PopupMenu(getApplicationContext(), view);
-        popup.getMenuInflater()
-                .inflate(R.menu.popup_menu, popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.i("WebsiteChange", "SiteEdit: Menu Item: " + item.getTitle());
+                return true;
+            }
+        });
+
         popup.show();
     }
 
