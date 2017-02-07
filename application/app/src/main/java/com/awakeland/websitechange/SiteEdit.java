@@ -4,7 +4,10 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,12 +30,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import android.os.AsyncTask;
 
 /**
  *
@@ -47,6 +53,8 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
     String siteListJoined;
     List siteArrayList = new ArrayList();
     ArrayAdapter<String> adapter;
+    private volatile int networkReturnStatus;
+    private EditText statusCode;
 
 
     /**
@@ -157,11 +165,16 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 Log.i("WebsiteChange", "SiteEdit: Menu Item: " + item.getTitle());
-                if ( item.getTitle().equals("Delete Entry")) {
+                if (item.getTitle().equals("Delete Entry")) {
                     Log.i("WebsiteChange", "SiteEdit: Menu Item: Inside Delete");
                     siteArrayList.remove(p);
                     updateSaveFile("", v, "delete");
                     adapter.notifyDataSetChanged();
+                }
+                else if (item.getTitle().equals("Check Site")) {
+                    Log.i("WebsiteChange", "SiteEdit: Menu Item: Inside CheckSite");
+                    WebPageTask task1 = new WebPageTask();
+                    task1.execute("https://google.com");
                 }
                 return true;
             }
@@ -169,6 +182,74 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
         popup.show();
     }
+
+
+    /**
+     *
+     */
+    private class WebPageTask extends AsyncTask<String, Void, String> {
+
+        /**
+         *
+         * @param theURL
+         * @return
+         */
+        @Override
+        protected String doInBackground(String... theURL) {
+            int responseCode;
+            String responseReturnString = "";
+
+            Log.i("WebsiteChange", "2:In WebPageTask " + theURL[0]);
+            try {
+                URL url = new URL(theURL[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("HEAD");
+                connection.connect();
+
+                responseCode = connection.getResponseCode();
+                networkReturnStatus = responseCode;
+                Log.i("WebsiteChange", "2:getResponseCode(): " + responseCode);
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    responseReturnString = "Connection" + responseCode;
+                }
+                Log.i("2: In WebsiteChange", "2:Connected! " + responseCode);
+            } catch (Exception e) {
+                e.printStackTrace();
+                responseReturnString = "No Connection";
+                Log.i("2: In WebsiteChange", "2:No Connection");
+            }
+            return responseReturnString;
+        }
+
+
+        /**
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            Log.i("2:WebsiteChange", result);
+            myHandler.sendEmptyMessage(0);
+        }
+    }
+
+
+    /**
+     *
+     */
+    Handler myHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    // The notice call method of doing things
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
 
 
     /**
@@ -208,7 +289,7 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
             writer.close();
         }
         catch (FileNotFoundException e) {
-            // Err msg here.
+            Log.i("WebsiteChange", "SiteEdit: Could not clear save file: " + SITEFILE);
         }
         // Write out the file to update for changes.
         siteListJoined = TextUtils.join("|", siteArrayList);
