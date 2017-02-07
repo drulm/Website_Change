@@ -2,6 +2,8 @@ package com.awakeland.websitechange;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -15,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-
+import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,12 +40,13 @@ import java.util.Set;
 public class SiteEdit extends ListActivity implements View.OnClickListener {
 
     private Button addSite;
-    EditText et;
+    EditText editttxt;
     FileInputStream inputStream;
     FileOutputStream outputStream;
     String SITEFILE = "SiteEditFile.txt";
     String siteListJoined;
-    List values = new ArrayList();
+    List siteArrayList = new ArrayList();
+    ArrayAdapter<String> adapter;
 
 
     /**
@@ -108,29 +111,29 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         addSite = (Button) findViewById(R.id.buttonSiteAdd);
         addSite.setOnClickListener(this);
 
-        et = (EditText) findViewById(R.id.siteAddress);
+        editttxt = (EditText) findViewById(R.id.siteAddress);
 
         siteListJoined = fileReadString(getApplicationContext());
 
-        values = new ArrayList<String>(Arrays.asList(siteListJoined.split("\\|")));
-        if (values.get(0) == "") {
-            values.remove(0);
+        siteArrayList = new ArrayList<String>(Arrays.asList(siteListJoined.split("\\|")));
+        if (siteArrayList.get(0) == "") {
+            siteArrayList.remove(0);
         }
 
         // Remove duplicates, if any.
-        Set<String> hashValues = new HashSet<>();
-        hashValues.addAll(values);
-        values.clear();
-        values.addAll(hashValues);
+        Set<String> hashsiteArrayList = new HashSet<>();
+        hashsiteArrayList.addAll(siteArrayList);
+        siteArrayList.clear();
+        siteArrayList.addAll(hashsiteArrayList);
 
-        Collections.sort(values);
+        Collections.sort(siteArrayList);
 
         Log.i("WebsiteChange", "SiteEdit: Read SITEFILE: " + siteListJoined);
         //Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteItems: " + siteItems);
-        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE values: " + values);
+        Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteArrayList: " + siteArrayList);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, values);
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, siteArrayList);
         setListAdapter(adapter);
     }
 
@@ -145,17 +148,20 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
     @Override
     protected void onListItemClick (ListView listview, View view, int pos, long id) {
         final int p = pos;
+        final View v = view;
 
         Log.i("WebsiteChange", "SiteEdit: List Item Clicked: " + pos);
-        PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+        PopupMenu popup = new PopupMenu(getApplicationContext(), v);
         popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 Log.i("WebsiteChange", "SiteEdit: Menu Item: " + item.getTitle());
-                if (item.getTitle() == "Delete Entry") {
-                    Object toRemove = values.remove(p);
-                    values.remove(toRemove);
+                if ( item.getTitle().equals("Delete Entry")) {
+                    Log.i("WebsiteChange", "SiteEdit: Menu Item: Inside Delete");
+                    siteArrayList.remove(p);
+                    updateSaveFile("", v, "delete");
+                    adapter.notifyDataSetChanged();
                 }
                 return true;
             }
@@ -167,44 +173,62 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
     /**
      *
+     * @param site
+     * @param view
+     */
+    public void updateSaveFile(String site, View view, String command) {
+
+        String snackMsg;
+        snackMsg = "Site added";
+
+        // Check if we should add the site.
+        if (! siteArrayList.contains(site) && ! site.isEmpty() && URLUtil.isValidUrl(site)) {
+            siteArrayList.add(site);
+            adapter.add(site);
+        }
+        else {
+            snackMsg = "Site entered is not a valid URL";
+        }
+
+        if (command.contains("delete")) {
+            snackMsg = "Site deleted";
+        }
+
+        // Create snackbar message.
+        Snackbar snack;
+        snack = Snackbar.make(view, snackMsg, Snackbar.LENGTH_LONG);
+        View sbView = snack.getView();
+        sbView.setBackgroundColor(Color.YELLOW);
+        snack.setAction("Action", null).show();
+
+        // Clear out the file.
+        try {
+            PrintWriter writer = new PrintWriter(SITEFILE);
+            writer.print("");
+            writer.close();
+        }
+        catch (FileNotFoundException e) {
+            // Err msg here.
+        }
+        // Write out the file to update for changes.
+        siteListJoined = TextUtils.join("|", siteArrayList);
+        fileWriteString(siteListJoined, getApplicationContext());
+        Log.i("WebsiteChange", "SiteEdit: Write SITEFILE: " + siteListJoined);
+    }
+
+
+    /**
+     *
      * @param view
      */
     public void onClick(View view) {
-        ArrayAdapter<String> adapter = (ArrayAdapter<String>) getListAdapter();
         String site;
-
 
         switch (view.getId()) {
             case R.id.buttonSiteAdd:
                 // Only add if string is not empty.
-                site = et.getText().toString();
-                if (
-                        ! site.isEmpty()
-                        && ! values.contains(site)
-                        &&  URLUtil.isValidUrl(site)
-                        ) {
-                    values.add(site);
-                    adapter.add(site);
-
-                    et.setText("");
-                    try {
-                        PrintWriter writer = new PrintWriter(SITEFILE);
-                        writer.print("");
-                        writer.close();
-                    }
-                    catch (FileNotFoundException e) {
-                        // Err msg here.
-                    }
-
-                    siteListJoined = TextUtils.join("|", values);
-                    fileWriteString(siteListJoined, getApplicationContext());
-                    Log.i("WebsiteChange", "SiteEdit: Write SITEFILE: " + siteListJoined);
-                }
-                else {
-                    // Create snackbar message.
-                    Snackbar.make(view, "Site: " + site + "is not a valid URL", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+                site = editttxt.getText().toString();
+                updateSaveFile(site, view, "add");
                 break;
         }
         adapter.notifyDataSetChanged();
