@@ -8,11 +8,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
+import android.widget.PopupMenu;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,7 +29,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import android.webkit.URLUtil;
 
 /**
  *
@@ -135,14 +135,18 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
     /**
      *
-     * @param lv
-     * @param v
+     * @param listview
+     * @param view
      * @param pos
      * @param id
      */
     @Override
-    protected void onListItemClick (ListView lv, View v, int pos, long id) {
+    protected void onListItemClick (ListView listview, View view, int pos, long id) {
         Log.i("WebsiteChange", "SiteEdit: List Item Clicked: " + pos);
+        PopupMenu popup = new PopupMenu(getApplicationContext(), view);
+        popup.getMenuInflater()
+                .inflate(R.menu.popup_menu, popup.getMenu());
+        popup.show();
     }
 
 
