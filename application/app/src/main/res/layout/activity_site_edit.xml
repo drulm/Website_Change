@@ -21,6 +21,7 @@
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/buttonSiteAdd"
         android:layout_toStartOf="@+id/buttonSiteAdd"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <ListView
         android:id="@android:id/list"
