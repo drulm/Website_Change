@@ -13,14 +13,14 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="textUri"
         android:ems="10"
         android:id="@+id/siteAddress"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/buttonSiteAdd"
-        android:layout_toStartOf="@+id/buttonSiteAdd" />
+        android:layout_toStartOf="@+id/buttonSiteAdd"
 
     <ListView
         android:id="@android:id/list"

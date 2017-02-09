@@ -273,6 +273,9 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         if (command.contains("delete")) {
             snackMsg = "Site deleted";
         }
+        else if (siteArrayList.contains(site)) {
+            snackMsg = "Site is already in list";
+        }
 
         // Create snackbar message.
         Snackbar snack;
