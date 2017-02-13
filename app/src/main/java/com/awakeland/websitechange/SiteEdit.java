@@ -20,9 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,14 +42,11 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
     private Button addSite;
     EditText editttxt;
-    FileInputStream inputStream;
-    FileOutputStream outputStream;
     String SITEFILE = "SiteEditFile.txt";
     String siteListJoined;
     List siteArrayList = new ArrayList();
     ArrayAdapter<String> adapter;
     private volatile int networkReturnStatus;
-    private EditText statusCode;
 
 
     /**
