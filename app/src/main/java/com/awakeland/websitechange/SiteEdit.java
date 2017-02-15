@@ -180,7 +180,6 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
      *
      */
     private class WebPageTask extends AsyncTask<String, Void, String> {
-
         /**
          *
          * @param theURL
