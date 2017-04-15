@@ -129,7 +129,6 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
         Collections.sort(siteArrayList);
 
         Log.i("WebsiteChange", "SiteEdit: Read SITEFILE: " + siteListJoined);
-        //Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteItems: " + siteItems);
         Log.i("WebsiteChange", "SiteEdit: Read SITEFILE siteArrayList: " + siteArrayList);
 
         adapter = new ArrayAdapter<String>(this,
@@ -180,7 +179,6 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
      *
      */
     private class WebPageTask extends AsyncTask<String, Void, String> {
-
         /**
          *
          * @param theURL
@@ -327,4 +325,3 @@ public class SiteEdit extends ListActivity implements View.OnClickListener {
 
 
 }
-
